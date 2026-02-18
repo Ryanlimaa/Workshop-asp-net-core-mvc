@@ -10,26 +10,28 @@ namespace ProjetoWebMVC.Controllers
 {
     public class HomeController : Controller
     {
+        //Resultado de uma acao
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult Sobre()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Sistema de vendas web MVC";
+            ViewData["Autor"] = "Ryan Lima";
 
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult Contato()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Informações para contato";
 
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Privacidade()
         {
             return View();
         }
