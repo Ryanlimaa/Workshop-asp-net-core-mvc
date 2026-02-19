@@ -26,6 +26,7 @@ namespace ProjetoWebMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews(); 
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -33,8 +34,9 @@ namespace ProjetoWebMVC
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            var connectionString = Configuration.GetConnectionString("ProjetoWebMVCContext");    
             services.AddDbContext<ProjetoWebMVCContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ProjetoWebMVCContext")));
+                    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));    
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,12 +56,13 @@ namespace ProjetoWebMVC
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            }); 
         }
     }
 }
