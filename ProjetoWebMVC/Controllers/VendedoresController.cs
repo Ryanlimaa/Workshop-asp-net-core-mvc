@@ -3,7 +3,9 @@ using ProjetoWebMVC.Models;
 using ProjetoWebMVC.Models.ViewModels;
 using ProjetoWebMVC.Services;
 using ProjetoWebMVC.Services.Exceptions;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ProjetoWebMVC.Controllers
 {
@@ -43,12 +45,12 @@ namespace ProjetoWebMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });   
             }
             var obj = _vendedorService.FindById(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });  
             }
             return View(obj);
         }
@@ -65,12 +67,12 @@ namespace ProjetoWebMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });   
             }
             var obj = _vendedorService.FindById(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });  
             }
             return View(obj);
         }
@@ -79,12 +81,12 @@ namespace ProjetoWebMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });   
             }
             var obj = _vendedorService.FindById(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });  
             }
             List<Departamento> departamentos = _departamentoService.FindAll();
             VendedorFormViewModel viewModel = new VendedorFormViewModel { Vendedor = obj, Departamentos = departamentos };
@@ -97,21 +99,27 @@ namespace ProjetoWebMVC.Controllers
         {
             if (id != vendedor.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id não compatível" });
             }
             try
             {
                 _vendedorService.Update(vendedor);
                 return RedirectToAction(nameof(Index));
             }
-            catch (NotFoundException)
+            catch (ApplicationException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message });    
             }
-            catch (DbConcurrencyException)
-            {
-                return BadRequest();
-            }
+        }
+
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel 
+            { 
+                Message = message, 
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier 
+            };
+            return View(viewModel); 
         }
     }
 }
