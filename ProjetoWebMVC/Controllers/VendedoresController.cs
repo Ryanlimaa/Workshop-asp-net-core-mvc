@@ -2,6 +2,8 @@
 using ProjetoWebMVC.Models;
 using ProjetoWebMVC.Models.ViewModels;
 using ProjetoWebMVC.Services;
+using ProjetoWebMVC.Services.Exceptions;
+using System.Collections.Generic;
 
 namespace ProjetoWebMVC.Controllers
 {
@@ -71,6 +73,45 @@ namespace ProjetoWebMVC.Controllers
                 return NotFound();
             }
             return View(obj);
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var obj = _vendedorService.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            List<Departamento> departamentos = _departamentoService.FindAll();
+            VendedorFormViewModel viewModel = new VendedorFormViewModel { Vendedor = obj, Departamentos = departamentos };
+            return View(viewModel);
+        }
+        // Metodo POST para deletar
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Vendedor vendedor)
+        {
+            if (id != vendedor.Id)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                _vendedorService.Update(vendedor);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (DbConcurrencyException)
+            {
+                return BadRequest();
+            }
         }
     }
 }
