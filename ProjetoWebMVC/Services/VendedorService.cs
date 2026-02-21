@@ -2,6 +2,7 @@
 using ProjetoWebMVC.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjetoWebMVC.Services
 {
@@ -27,7 +28,7 @@ namespace ProjetoWebMVC.Services
         // Encontrando um vendedor por id no banco de dados 
         public Vendedor FindById(int id)
         {
-            return _context.Vendedor.FirstOrDefault(obj => obj.Id == id);
+            return _context.Vendedor.Include(obj => obj.Departamento).FirstOrDefault(obj => obj.Id == id);
         }
         // Removendo um vendedor do banco de dados por id   
         public void Remove(int id)

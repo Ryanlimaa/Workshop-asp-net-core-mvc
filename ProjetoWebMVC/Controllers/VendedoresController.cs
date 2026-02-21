@@ -8,13 +8,13 @@ namespace ProjetoWebMVC.Controllers
     public class VendedoresController : Controller
     {
         private readonly VendedorService _vendedorService;
-        private readonly DepartamentoService _departamentoService;  
+        private readonly DepartamentoService _departamentoService;
 
         public VendedoresController(VendedorService vendedorService, DepartamentoService departamentoService)
         {
             _vendedorService = vendedorService;
             _departamentoService = departamentoService;
-        }   
+        }
 
         public IActionResult Index()
         {
@@ -24,7 +24,7 @@ namespace ProjetoWebMVC.Controllers
 
         public IActionResult Create()
         {
-            var departamentos = _departamentoService.FindAll(); 
+            var departamentos = _departamentoService.FindAll();
             var viewModel = new VendedorFormViewModel { Departamentos = departamentos };
             return View(viewModel);
         }
@@ -46,9 +46,9 @@ namespace ProjetoWebMVC.Controllers
             var obj = _vendedorService.FindById(id.Value);
             if (obj == null)
             {
-                return NotFound();  
+                return NotFound();
             }
-            return View(obj);   
+            return View(obj);
         }
         // Metodo POST para deletar
         [HttpPost]
@@ -56,7 +56,21 @@ namespace ProjetoWebMVC.Controllers
         public IActionResult Delete(int id)
         {
             _vendedorService.Remove(id);
-            return RedirectToAction(nameof(Index)); 
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var obj = _vendedorService.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
         }
     }
 }
