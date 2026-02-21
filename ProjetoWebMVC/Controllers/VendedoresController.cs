@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjetoWebMVC.Models;
+using ProjetoWebMVC.Models.ViewModels;
 using ProjetoWebMVC.Services;
 
 namespace ProjetoWebMVC.Controllers
@@ -6,10 +8,12 @@ namespace ProjetoWebMVC.Controllers
     public class VendedoresController : Controller
     {
         private readonly VendedorService _vendedorService;
+        private readonly DepartamentoService _departamentoService;  
 
-        public VendedoresController(VendedorService vendedorService)
+        public VendedoresController(VendedorService vendedorService, DepartamentoService departamentoService)
         {
             _vendedorService = vendedorService;
+            _departamentoService = departamentoService;
         }   
 
         public IActionResult Index()
@@ -17,5 +21,21 @@ namespace ProjetoWebMVC.Controllers
             var list = _vendedorService.FindAll();
             return View(list);
         }
+
+        public IActionResult Create()
+        {
+            var departamentos = _departamentoService.FindAll(); 
+            var viewModel = new VendedorFormViewModel { Departamentos = departamentos };
+            return View(viewModel);
+        }
+        // Metodo POST do Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Vendedor vendedor)
+        {
+            _vendedorService.Insert(vendedor);
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

@@ -15,6 +15,7 @@ namespace ProjetoWebMVC.Models
         public double BaseSalary { get; set; }
         public Departamento Departamento { get; set; }
         public ICollection<RegistroVenda> Venda { get; set; } = new List<RegistroVenda>();
+        public int DepartamentoId { get; set; }
 
         public Vendedor()
         {

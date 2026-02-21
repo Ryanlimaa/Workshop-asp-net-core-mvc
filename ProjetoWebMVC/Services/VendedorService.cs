@@ -13,10 +13,16 @@ namespace ProjetoWebMVC.Services
         {
             _context = context;
         }
-
+        // Enviando a lista para o banco de dados   
         public List<Vendedor> FindAll()
         {
             return _context.Vendedor.ToList();
+        }
+        // Inserindo um novo vendedor no banco de dados    
+        public void Insert(Vendedor obj)
+        {
+            _context.Add(obj);
+            _context.SaveChanges();
         }
     }
 }
