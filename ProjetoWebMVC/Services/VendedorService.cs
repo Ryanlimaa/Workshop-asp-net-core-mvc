@@ -24,5 +24,17 @@ namespace ProjetoWebMVC.Services
             _context.Add(obj);
             _context.SaveChanges();
         }
+        // Encontrando um vendedor por id no banco de dados 
+        public Vendedor FindById(int id)
+        {
+            return _context.Vendedor.FirstOrDefault(obj => obj.Id == id);
+        }
+        // Removendo um vendedor do banco de dados por id   
+        public void Remove(int id)
+        {
+            var obj = _context.Vendedor.Find(id);
+            _context.Vendedor.Remove(obj);
+            _context.SaveChanges();
+        }
     }
 }

@@ -37,5 +37,26 @@ namespace ProjetoWebMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var obj = _vendedorService.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();  
+            }
+            return View(obj);   
+        }
+        // Metodo POST para deletar
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            _vendedorService.Remove(id);
+            return RedirectToAction(nameof(Index)); 
+        }
     }
 }
