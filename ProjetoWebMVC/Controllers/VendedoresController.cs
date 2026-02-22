@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using ProjetoWebMVC.Models;
 using ProjetoWebMVC.Models.ViewModels;
 using ProjetoWebMVC.Services;
@@ -59,8 +60,15 @@ namespace ProjetoWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            _vendedorService.Remove(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _vendedorService.Remove(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (IntegrityException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
         }
 
         public IActionResult Details(int? id)

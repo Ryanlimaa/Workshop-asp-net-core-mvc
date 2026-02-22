@@ -34,9 +34,16 @@ namespace ProjetoWebMVC.Services
         // Removendo um vendedor do banco de dados por id   
         public void Remove(int id)
         {
-            var obj = _context.Vendedor.Find(id);
-            _context.Vendedor.Remove(obj);
-            _context.SaveChanges();
+            try
+            {
+                var obj = _context.Vendedor.Find(id);
+                _context.Vendedor.Remove(obj);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                throw new IntegrityException("Não é possível deletar um vendedor que possui vendas!");
+            }
         }
         // Atualizando um vendedor no banco de dados por id 
         public void Update(Vendedor obj)
