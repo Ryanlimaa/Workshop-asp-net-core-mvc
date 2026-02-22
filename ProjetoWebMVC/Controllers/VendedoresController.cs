@@ -92,7 +92,7 @@ namespace ProjetoWebMVC.Controllers
             VendedorFormViewModel viewModel = new VendedorFormViewModel { Vendedor = obj, Departamentos = departamentos };
             return View(viewModel);
         }
-        // Metodo POST para deletar
+        // Metodo POST para editar
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Vendedor vendedor)
