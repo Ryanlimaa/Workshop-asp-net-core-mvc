@@ -44,6 +44,7 @@ namespace ProjetoWebMVC
             services.AddScoped<SeedingService>();
             services.AddScoped<VendedorService>();
             services.AddScoped<DepartamentoService>();  
+            services.AddScoped<RegistroVendaService>();
         }
 
         // Metodo chamado pelo runtime. Use este método para configurar o pipeline de solicitação HTTP. 

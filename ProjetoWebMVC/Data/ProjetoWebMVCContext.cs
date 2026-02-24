@@ -16,6 +16,6 @@ namespace ProjetoWebMVC.Data
 
         public DbSet<Departamento> Departamento { get; set; } = default!;
         public DbSet<Vendedor> Vendedor { get; set; } = default!;   
-        public DbSet<RegistroVenda> RegistroVenda { get; set; } = default!; 
+        public DbSet<RegistroVenda> RegistroVenda { get; set; } = default!;
     }
 }
